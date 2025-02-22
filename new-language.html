@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>O'quv Markazi</title>
+  <style>
+    /* ======== GLOBAL STYLES ======== */
+    * {
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      background-color: #ecf0f1;
+      color: #2c3e50;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    a {
+      text-decoration: none;
+      color: white;
+    }
+    .dark-mode {
+      background-color: #1e1e1e;
+      color: #f1f1f1;
+    }
+
+    /* ======== CONTAINER ======== */
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ======== SIDEBAR ======== */
+    .sidebar {
+      width: 250px;
+      background-color: #2c3e50;
+      color: #fff;
+      padding: 20px 15px;
+      transition: background-color 0.3s;
+    }
+    .dark-mode .sidebar {
+      background-color: #333;
+    }
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+    .sidebar ul {
+      list-style: none;
+    }
+    .sidebar ul li {
+      margin-bottom: 15px;
+    }
+    .sidebar ul li a {
+      display: block;
+      padding: 10px;
+      background-color: #34495e;
+      border-radius: 5px;
+      transition: 0.3s;
+      color: #fff;
+    }
+    .sidebar ul li a:hover {
+      background-color: #1abc9c;
+    }
+    .dark-mode .sidebar ul li a {
+      background-color: #444;
+    }
+    .dark-mode .sidebar ul li a:hover {
+      background-color: #555;
+    }
+
+    /* ======== MAIN CONTENT ======== */
+    .content {
+      flex: 1;
+      padding: 25px 30px;
+      transition: background-color 0.3s;
+    }
+    .dark-mode .content {
+      background-color: #1e1e1e;
+    }
+
+    /* ======== DASHBOARD HEADER (LANG & DARK) ======== */
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px; /* biroz pastroqqa tushirish */
+    }
+    .dashboard-header h1 {
+      font-size: 26px;
+    }
+    .lang-container {
+      display: flex;
+      align-items: center;
+    }
+    .lang-select {
+      font-size: 12px;
+      padding: 4px;
+      margin-right: 5px;
+    }
+    .lang-container img {
+      width: 20px;
+      height: auto;
+      margin-left: 5px;
+    }
+    .dark-toggle-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      padding: 2px;
+      margin-left: 10px;
+    }
+    .dark-toggle-btn svg {
+      width: 100%;
+      height: 100%;
+      fill: #2c3e50;
+      transition: fill 0.3s;
+    }
+    .dark-toggle-btn:hover svg {
+      fill: #1abc9c;
+    }
+    .dark-mode .dark-toggle-btn svg {
+      fill: #f1f1f1;
+    }
+
+    /* ======== INPUT & BUTTON STYLES ======== */
+    input[type="text"],
+    input[type="date"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      color: #2c3e50;
+    }
+    .dark-mode input,
+    .dark-mode select {
+      background-color: #444;
+      color: #fff;
+      border-color: #666;
+    }
+    label {
+      margin-top: 10px;
+      display: block;
+    }
+    button {
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: 0.3s;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    /* ======== TABLE STYLES ======== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      background-color: #fff;
+      border-radius: 5px;
+      overflow: hidden;
+      color: #2c3e50;
+    }
+    .dark-mode table {
+      background-color: #2c2c2c;
+      color: #f1f1f1;
+    }
+    thead {
+      background-color: #34495e;
+      color: #fff;
+    }
+    .dark-mode thead {
+      background-color: #444;
+    }
+    th, td {
+      padding: 14px;
+      border: 1px solid #ddd;
+      text-align: left;
+      vertical-align: middle;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    .dark-mode tr:nth-child(even) {
+      background-color: #3c3c3c;
+    }
+    .delete-btn {
+      background-color: #c0392b;
+      border: none;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .delete-btn:hover {
+      background-color: #e74c3c;
+    }
+
+    /* ======== SEARCH RESULT ======== */
+    .search-result {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #e74c3c;
+    }
+    .dark-mode .search-result {
+      color: #f39c12;
+    }
+
+    /* ======== RESPONSIVE ======== */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        height: auto;
+      }
+      .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- SIDEBAR -->
+    <nav class="sidebar">
+      <h2 data-lang="sidebarTitle">Learning Center</h2>
+      <ul>
+        <li><a href="#" onclick="showSection('dashboard')" data-lang="menuDashboard">Dashboard</a></li>
+        <li><a href="#" onclick="showSection('students')" data-lang="menuStudents">Students</a></li>
+        <li><a href="#" onclick="showSection('payments')" data-lang="menuPayments">Payments</a></li>
+        <li><a href="#" onclick="showSection('attendance')" data-lang="menuAttendance">Attendance</a></li>
+      </ul>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+      <!-- Dashboard -->
+      <section id="dashboard">
+        <div class="dashboard-header">
+          <h1 data-lang="dashboardTitle">Welcome, Admin!</h1>
+          <div class="lang-container">
+            <select class="lang-select" id="langSelect" onchange="changeLanguage()">
+              <option value="uz">O'zbek</option>
+              <option value="en">English</option>
+            </select>
+            <!-- <img src="uzbek_flag.png" alt="Uzbek Flag"> -->
+            <button class="dark-toggle-btn" onclick="toggleDarkMode()" title="Toggle Dark Mode">
+              <svg viewBox="0 0 24 24">
+                <path d="M21.752 15.002A9 9 0 0 1 12 3v0a9 9 0 0 0 0 18 9 9 0 0 0 9.752-5.998z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <p data-lang="dashboardText">Here you can manage your learning center.</p>
+      </section>
+
+      <!-- O‘QUVCHILAR (STUDENTS) BO‘LIMI -->
+      <section id="students" style="display: none;">
+        <h1 data-lang="studentsTitle">Add Student</h1>
+        <input type="text" id="studentName" placeholder="Name" required>
+        <input type="text" id="studentSurname" placeholder="Surname" required>
+        <input type="text" id="studentPhone" placeholder="Phone" required>
+        <label data-lang="studentsDateLabel">Join date:</label>
+        <input type="date" id="studentDate" required>
+        <button onclick="addStudent()" data-lang="studentsAddBtn">Add</button>
+
+        <!-- Qidiruv -->
+        <h3 data-lang="searchTitle">Search</h3>
+        <input type="text" id="studentSearch" placeholder="Name Surname or ID" oninput="searchStudent()">
+        <div class="search-result" id="searchResult"></div>
+
+        <h1 data-lang="studentsListTitle">Student List</h1>
+        <table>
+          <thead>
+            <tr>
+              <th data-lang="thName">Name</th>
+              <th data-lang="thSurname">Surname</th>
+              <th data-lang="thPhone">Phone</th>
+              <th data-lang="thDate">Date</th>
+              <th data-lang="thID">ID</th>
+              <th data-lang="thDelete">Delete</th>
+            </tr>
+          </thead>
+          <tbody id="studentList"></tbody>
+        </table>
+      </section>
+
+      <!-- TO‘LOVLAR (PAYMENTS) BO‘LIMI -->
+      <section id="payments" style="display: none;">
+        <h1 data-lang="paymentsTitle">Add Payment</h1>
+        <input type="text" id="paymentId" placeholder="Student ID" oninput="findStudent()">
+        <p id="studentInfo" style="font-weight:bold; color:#333;"></p>
+        <input type="number" id="amount" placeholder="Amount" required>
+        <input type="text" id="month" placeholder="Month (e.g. January)" required>
+        <input type="text" id="course" placeholder="Course (e.g. IELTS)" required>
+        <button onclick="savePayment()" data-lang="paymentsSaveBtn">Save</button>
+
+        <h1 data-lang="paymentsListTitle">Payment History</h1>
+        <table>
+          <thead>
+            <tr>
+              <th data-lang="thPayID">Payment ID</th>
+              <th data-lang="thStudID">Student ID</th>
+              <th data-lang="thAmount">Amount</th>
+              <th data-lang="thMonth">Month</th>
+              <th data-lang="thCourse">Course</th>
+              <th data-lang="thDelete">Delete</th>
+            </tr>
+          </thead>
+          <tbody id="paymentList"></tbody>
+        </table>
+      </section>
+
+      <!-- DAVOMAT (ATTENDANCE) BO‘LIMI -->
+      <section id="attendance" style="display: none;">
+        <h1 data-lang="attendanceTitle">Attendance</h1>
+        <input type="text" id="attendanceStudentId" placeholder="Student ID">
+        <label data-lang="attendanceDateLabel">Date:</label>
+        <input type="date" id="attendanceDate">
+        <label data-lang="attendanceStatusLabel">Status:</label>
+        <select id="attendanceStatus">
+          <option value="present" data-lang="optPresent">Present</option>
+          <option value="absent" data-lang="optAbsent">Absent</option>
+        </select>
+        <button onclick="saveAttendance()" data-lang="attendanceSaveBtn">Save</button>
+
+        <h1 data-lang="attendanceListTitle">Attendance List</h1>
+        <table>
+          <thead>
+            <tr>
+              <th data-lang="thAttID">Attendance ID</th>
+              <th data-lang="thStudID">Student ID</th>
+              <th data-lang="thDate">Date</th>
+              <th data-lang="thStatus">Status</th>
+              <th data-lang="thDelete">Delete</th>
+            </tr>
+          </thead>
+          <tbody id="attendanceList"></tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    /*******************************
+     * 1) TIL REJIMI (UZ / EN)
+     *******************************/
+    const languages = {
+      uz: {
+        sidebarTitle: "O'quv Markazi",
+        menuDashboard: "Dashboard",
+        menuStudents: "O‘quvchilar",
+        menuPayments: "To‘lovlar",
+        menuAttendance: "Davomat",
+
+        dashboardTitle: "Xush kelibsiz, Admin!",
+        dashboardText: "Bu yerda o'quv markazingizni boshqarishingiz mumkin.",
+
+        studentsTitle: "O‘quvchi qo‘shish",
+        studentsDateLabel: "Kelgan sana:",
+        studentsAddBtn: "Qo‘shish",
+        searchTitle: "Qidiruv",
+        studentsListTitle: "O‘quvchilar ro‘yxati",
+
+        thName: "Ism",
+        thSurname: "Familiya",
+        thPhone: "Telefon raqami",
+        thDate: "Kelgan sana",
+        thID: "ID",
+        thDelete: "O‘chirish",
+
+        paymentsTitle: "To‘lov qo‘shish",
+        paymentsSaveBtn: "Saqlash",
+        paymentsListTitle: "To‘lovlar tarixi",
+        thPayID: "To‘lov ID",
+        thStudID: "O‘quvchi ID",
+        thAmount: "Summasi",
+        thMonth: "Oy",
+        thCourse: "Kurs",
+
+        attendanceTitle: "Davomat",
+        attendanceDateLabel: "Kelgan sana:",
+        attendanceStatusLabel: "Holati:",
+        attendanceSaveBtn: "Saqlash",
+        attendanceListTitle: "Davomat ro‘yxati",
+        thAttID: "Davomat ID",
+        thStatus: "Holati",
+        optPresent: "Kelgan",
+        optAbsent: "Kelmagan"
+      },
+      en: {
+        sidebarTitle: "Learning Center",
+        menuDashboard: "Dashboard",
+        menuStudents: "Students",
+        menuPayments: "Payments",
+        menuAttendance: "Attendance",
+
+        dashboardTitle: "Welcome, Admin!",
+        dashboardText: "Here you can manage your learning center.",
+
+        studentsTitle: "Add Student",
+        studentsDateLabel: "Join date:",
+        studentsAddBtn: "Add",
+        searchTitle: "Search",
+        studentsListTitle: "Student List",
+
+        thName: "Name",
+        thSurname: "Surname",
+        thPhone: "Phone",
+        thDate: "Date",
+        thID: "ID",
+        thDelete: "Delete",
+
+        paymentsTitle: "Add Payment",
+        paymentsSaveBtn: "Save",
+        paymentsListTitle: "Payment History",
+        thPayID: "Payment ID",
+        thStudID: "Student ID",
+        thAmount: "Amount",
+        thMonth: "Month",
+        thCourse: "Course",
+
+        attendanceTitle: "Attendance",
+        attendanceDateLabel: "Date:",
+        attendanceStatusLabel: "Status:",
+        attendanceSaveBtn: "Save",
+        attendanceListTitle: "Attendance List",
+        thAttID: "Attendance ID",
+        thStatus: "Status",
+        optPresent: "Present",
+        optAbsent: "Absent"
+      }
+    };
+
+    function changeLanguage() {
+      const lang = document.getElementById("langSelect").value;
+      localStorage.setItem("appLang", lang);
+      applyLanguage(lang);
+    }
+
+    function applyLanguage(lang) {
+      const elements = document.querySelectorAll("[data-lang]");
+      elements.forEach(el => {
+        const key = el.getAttribute("data-lang");
+        if (languages[lang][key]) {
+          el.textContent = languages[lang][key];
+        }
+      });
+      // Select variantlarini ham yangilaymiz
+      document.getElementById("attendanceStatus").querySelector("[value='present']").textContent = languages[lang].optPresent;
+      document.getElementById("attendanceStatus").querySelector("[value='absent']").textContent = languages[lang].optAbsent;
+    }
+
+    /*******************************
+     * 2) DARK MODE
+     *******************************/
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+      const mode = document.body.classList.contains("dark-mode") ? "dark" : "light";
+      localStorage.setItem("theme", mode);
+    }
+
+    /*******************************
+     * 3) BO‘LIMLARNI BOSHQARISH
+     *******************************/
+    function showSection(sectionId) {
+      const sections = document.querySelectorAll('section');
+      sections.forEach(sec => sec.style.display = 'none');
+      document.getElementById(sectionId).style.display = 'block';
+    }
+
+    /*******************************
+     * 4) MA’LUMOT STRUKTURALARI
+     *******************************/
+    let students = [];
+    let currentStudentId = 0;
+
+    let payments = [];
+    let currentPaymentId = 0;
+
+    let attendance = [];
+    let currentAttendanceId = 0;
+
+    /*******************************
+     * 5) O‘QUVCHILAR (STUDENTS)
+     *******************************/
+    function addStudent() {
+      const name = document.getElementById('studentName').value.trim();
+      const surname = document.getElementById('studentSurname').value.trim();
+      const phone = document.getElementById('studentPhone').value.trim();
+      const date = document.getElementById('studentDate').value;
+
+      if (!name || !surname || !phone || !date) {
+        alert("Barcha maydonlarni to‘ldiring!");
+        return;
+      }
+
+      currentStudentId++;
+      const newStudent = {
+        id: currentStudentId,
+        name,
+        surname,
+        phone,
+        date
+      };
+
+      students.push(newStudent);
+      // Formani tozalash
+      document.getElementById('studentName').value = '';
+      document.getElementById('studentSurname').value = '';
+      document.getElementById('studentPhone').value = '';
+      document.getElementById('studentDate').value = '';
+
+      saveData();
+      renderStudents();
+    }
+
+    function renderStudents() {
+      const studentList = document.getElementById('studentList');
+      studentList.innerHTML = '';
+
+      students.forEach(st => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${st.name}</td>
+          <td>${st.surname}</td>
+          <td>${st.phone}</td>
+          <td>${st.date}</td>
+          <td>${st.id}</td>
+          <td><button class="delete-btn" onclick="deleteStudent(${st.id})" data-lang="thDelete">Delete</button></td>
+        `;
+        studentList.appendChild(tr);
+      });
+    }
+
+    function deleteStudent(id) {
+      students = students.filter(st => st.id !== id);
+      saveData();
+      renderStudents();
+    }
+
+    // Qidiruv: ID yoki Ism Familiya bo‘yicha
+    function searchStudent() {
+      const query = document.getElementById('studentSearch').value.trim().toLowerCase();
+      const resultDiv = document.getElementById('searchResult');
+
+      if (!query) {
+        resultDiv.textContent = "";
+        return;
+      }
+
+      if (!isNaN(query)) {
+        // Agar kiritilgan qiymat raqam bo'lsa, ID bo'yicha izlaymiz
+        const found = students.find(s => s.id == query);
+        resultDiv.textContent = found ? `ID: ${found.id} -> ${found.name} ${found.surname}` : "Topilmadi";
+      } else {
+        // Aks holda ism-familiya bo'yicha izlaymiz
+        const found = students.find(s => (s.name + " " + s.surname).toLowerCase() === query);
+        resultDiv.textContent = found ? `${found.name} ${found.surname} -> ID: ${found.id}` : "Topilmadi";
+      }
+    }
+
+    /*******************************
+     * 6) TO‘LOVLAR (PAYMENTS)
+     *******************************/
+    function findStudent() {
+      const id = document.getElementById('paymentId').value;
+      const student = students.find(s => s.id == id);
+      const info = document.getElementById('studentInfo');
+      info.textContent = student ? (student.name + ' ' + student.surname) : 'Bunday ID li o‘quvchi topilmadi';
+    }
+
+    function savePayment() {
+      const id = document.getElementById('paymentId').value;
+      const amount = document.getElementById('amount').value;
+      const month = document.getElementById('month').value.trim();
+      const course = document.getElementById('course').value.trim();
+
+      if (!id || !amount || !month || !course) {
+        alert("Barcha maydonlarni to‘ldiring!");
+        return;
+      }
+
+      if (!students.find(s => s.id == id)) {
+        alert("Bunday ID li o‘quvchi mavjud emas!");
+        return;
+      }
+
+      currentPaymentId++;
+      const newPayment = {
+        payId: currentPaymentId,
+        studentId: id,
+        amount,
+        month,
+        course
+      };
+
+      payments.push(newPayment);
+      // Formani tozalash
+      document.getElementById('paymentId').value = '';
+      document.getElementById('amount').value = '';
+      document.getElementById('month').value = '';
+      document.getElementById('course').value = '';
+      document.getElementById('studentInfo').textContent = '';
+
+      saveData();
+      renderPayments();
+    }
+
+    function renderPayments() {
+      const paymentList = document.getElementById('paymentList');
+      paymentList.innerHTML = '';
+
+      payments.forEach(pay => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${pay.payId}</td>
+          <td>${pay.studentId}</td>
+          <td>${pay.amount}</td>
+          <td>${pay.month}</td>
+          <td>${pay.course}</td>
+          <td><button class="delete-btn" onclick="deletePayment(${pay.payId})" data-lang="thDelete">Delete</button></td>
+        `;
+        paymentList.appendChild(tr);
+      });
+    }
+
+    function deletePayment(payId) {
+      payments = payments.filter(p => p.payId !== payId);
+      saveData();
+      renderPayments();
+    }
+
+    /*******************************
+     * 7) DAVOMAT (ATTENDANCE)
+     *******************************/
+    function saveAttendance() {
+      const studentId = document.getElementById('attendanceStudentId').value.trim();
+      const date = document.getElementById('attendanceDate').value;
+      const status = document.getElementById('attendanceStatus').value;
+
+      if (!studentId || !date || !status) {
+        alert("Barcha maydonlarni to‘ldiring!");
+        return;
+      }
+
+      if (!students.find(s => s.id == studentId)) {
+        alert("Bunday ID li o‘quvchi mavjud emas!");
+        return;
+      }
+
+      currentAttendanceId++;
+      const newAttendance = {
+        attendanceId: currentAttendanceId,
+        studentId: studentId,
+        date: date,
+        status: status
+      };
+
+      attendance.push(newAttendance);
+      // Formani tozalash
+      document.getElementById('attendanceStudentId').value = '';
+      document.getElementById('attendanceDate').value = '';
+      document.getElementById('attendanceStatus').value = 'present';
+
+      saveData();
+      renderAttendance();
+    }
+
+    function renderAttendance() {
+      const attendanceList = document.getElementById('attendanceList');
+      attendanceList.innerHTML = '';
+
+      attendance.forEach(att => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${att.attendanceId}</td>
+          <td>${att.studentId}</td>
+          <td>${att.date}</td>
+          <td>${att.status}</td>
+          <td><button class="delete-btn" onclick="deleteAttendance(${att.attendanceId})" data-lang="thDelete">Delete</button></td>
+        `;
+        attendanceList.appendChild(tr);
+      });
+    }
+
+    function deleteAttendance(id) {
+      attendance = attendance.filter(a => a.attendanceId !== id);
+      saveData();
+      renderAttendance();
+    }
+
+    /*******************************
+     * 8) LOCALSTORAGE
+     *******************************/
+    function saveData() {
+      localStorage.setItem('students', JSON.stringify(students));
+      localStorage.setItem('currentStudentId', currentStudentId);
+
+      localStorage.setItem('payments', JSON.stringify(payments));
+      localStorage.setItem('currentPaymentId', currentPaymentId);
+
+      localStorage.setItem('attendance', JSON.stringify(attendance));
+      localStorage.setItem('currentAttendanceId', currentAttendanceId);
+    }
+
+    function loadData() {
+      const storedStudents = localStorage.getItem('students');
+      const storedStudentId = localStorage.getItem('currentStudentId');
+      const storedPayments = localStorage.getItem('payments');
+      const storedPaymentId = localStorage.getItem('currentPaymentId');
+      const storedAttendance = localStorage.getItem('attendance');
+      const storedAttendanceId = localStorage.getItem('currentAttendanceId');
+
+      if (storedStudents) {
+        students = JSON.parse(storedStudents);
+      }
+      if (storedStudentId) {
+        currentStudentId = parseInt(storedStudentId);
+      }
+      if (storedPayments) {
+        payments = JSON.parse(storedPayments);
+      }
+      if (storedPaymentId) {
+        currentPaymentId = parseInt(storedPaymentId);
+      }
+      if (storedAttendance) {
+        attendance = JSON.parse(storedAttendance);
+      }
+      if (storedAttendanceId) {
+        currentAttendanceId = parseInt(storedAttendanceId);
+      }
+    }
+
+    /*******************************
+     * 9) ON LOAD
+     *******************************/
+    window.addEventListener('DOMContentLoaded', () => {
+      // 1) Tilni yuklash
+      const savedLang = localStorage.getItem("appLang") || "uz";
+      document.getElementById("langSelect").value = savedLang;
+      applyLanguage(savedLang);
+
+      // 2) Dark mode holati
+      const theme = localStorage.getItem("theme");
+      if (theme === "dark") {
+        document.body.classList.add("dark-mode");
+      }
+
+      // 3) LocalStorage ma’lumotlari
+      loadData();
+      renderStudents();
+      renderPayments();
+      renderAttendance();
+    });
+  </script>
+</body>
+</html>
